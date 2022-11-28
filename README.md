@@ -13,7 +13,7 @@ So use this only on MQ_QUAD.
 ```
 # apt-get update
 # apt-get install -y git
-# git clone 
+# git clone https://github.com/REevee0/wiringMQ.git
 ```
 
 
@@ -22,7 +22,7 @@ So use this only on MQ_QUAD.
 ```
 # cd wiringMP
 # ./build clean
-# ./build 
+# sudo ./build 
 ```
 
 
