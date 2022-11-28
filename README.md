@@ -3,6 +3,9 @@
   This project basing on WiringOP and WiringPi. It has been rearranged to work on the MQ_Quad board belonging to Mango Pi company.
 So use this only on MQ_QUAD.
 
+Run on Linux compiled by showsoft 
+https://github.com/showsoft/Mangopi-MQQuad-srv
+
 ## What working?
 
   Gpio Output and Input.
