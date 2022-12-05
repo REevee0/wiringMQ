@@ -60,7 +60,24 @@ https://github.com/showsoft/Mangopi-MQQuad-srv
  | GPIO | wPi |   Name   | Mode | V | Physical | V | Mode | Name     | wPi | GPIO |
  +------+-----+----------+------+---+  MQ_Quad +---+------+----------+-----+------+
 ```
+## Enable SPI1
+Add the configuration in the part below to /boot/orangepiEnv.txt, and then
+restart the Linux system to open SPI1.
 
+overlays=spi-spidev
+param_spidev_spi_bus=1
+param_spidev_spi_cs=1
+
+##Enable I2C3 
+Since there is a h616 processor on the board and the operating system is made by changing the files of the Orange Pi Zero 2 model, i2c seems to have i2c3 for now. I haven't tested the others yet.
+
+SCL Pin = H4
+SDA Pin = H5
+
+Add the configuration in the  part below to /boot/orangepiEnv.txt, and then
+restart the Linux system to open I2C3.
+
+overlays=i2c3
 ## TO-DO
 
-  Almost no communication protocol works. Making them work.
+ More tests with communcation protocols.
