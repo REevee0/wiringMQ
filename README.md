@@ -68,7 +68,7 @@ overlays=spi-spidev
 param_spidev_spi_bus=1
 param_spidev_spi_cs=1
 
-##Enable I2C3 
+## Enable I2C3 
 Since there is a h616 processor on the board and the operating system is made by changing the files of the Orange Pi Zero 2 model, i2c seems to have i2c3 for now. I haven't tested the others yet.
 
 SCL Pin = H4
