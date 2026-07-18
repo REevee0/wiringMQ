@@ -1,5 +1,7 @@
 # wiringMQ
 
+<img src="assets/banner.svg" alt="wiringMQ" width="100%" />
+
 [![License](https://img.shields.io/badge/license-LGPL-c084fc?style=flat-square)](COPYING.LESSER)
 ![Platform](https://img.shields.io/badge/platform-Mango%20Pi%20MQ__Quad-c084fc?style=flat-square)
 ![SoC](https://img.shields.io/badge/SoC-Allwinner%20H616-c084fc?style=flat-square)
@@ -12,6 +14,10 @@ to the H616 SoC, so existing WiringPi code Just Works™ on MQ_Quad.
 > The MQ_Quad ships with an OS image based on Orange Pi Zero 2 (same H616 SoC),
 > so most of the porting work is around correctly mapping MQ_Quad's 40-pin header
 > to the H616's GPIO banks.
+
+## Why this exists
+
+MQ_Quad had no WiringPi port available, which made using familiar C APIs difficult on this board. The existing Orange Pi Zero 2 wiringOP was close since both boards use the same H616 SoC, but its 40-pin header mapping didn't match MQ_Quad's physical layout. This project fixes that mismatch so your existing WiringPi C code works verbatim without any pin number changes.
 
 ## Features
 
@@ -86,25 +92,22 @@ Build with `gcc blink.c -lwiringPi -o blink`.
  +------+-----+----------+------+---+----++----+---+------+----------+-----+------+
 ```
 
-## Enabling peripherals
+## Building
 
-Both edits go in `/boot/orangepiEnv.txt`; reboot afterwards.
+The library builds into two shared objects: `libwiringPi.so` and `libwiringPiDev.so`. It also compiles the `gpio` CLI tool, which mirrors the original WiringPi command-line interface for familiar usage.
 
-### SPI1
+## Compared to alternatives
 
-```
-overlays=spi-spidev
-param_spidev_spi_bus=1
-param_spidev_spi_cs=1
-```
+| Feature | wiringMQ (this repo) | WiringOP (Orange Pi Zero 2) | sysfs GPIO |
+|---------|---------------------|----------------------------|------------|
+| MQ_Quad pinout | ✅ Correct mapping | ❌ Wrong header mapping | N/A |
+| GPIO speed | Fast, optimized | Fast, optimized | Slower |
+| SPI/I²C helpers | Built-in | Built-in | Manual setup |
+| existing wiringPi code works | ✅ Verbatim | ⚠️ Pin numbers differ | ❌ Requires rewrite |
 
-### I²C 3
+## Contributing
 
-`SCL = H4`, `SDA = H5` (other buses untested).
-
-```
-overlays=i2c3
-```
+PRs are welcome! I'm especially interested in testing other H616 communication blocks like PWM, additional UARTs, and SPI0/I²C0/I²C1. If you have experience with these peripherals, your contributions would be greatly appreciated.
 
 ## Roadmap
 
