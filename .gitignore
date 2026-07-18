@@ -1,0 +1,55 @@
+# Build artifacts
+*.o
+*.a
+*.so
+*.so.*
+*.lo
+*.la
+
+# Compiled binaries (matches gpio, gpio/pintest, examples/pwm, etc.)
+/gpio/gpio
+/gpio/pintest
+/examples/pwm
+/examples/blink
+/examples/blink12
+/examples/blink6drcs
+/examples/blink8*
+/examples/blink12drcs
+/examples/clock
+/examples/delayTest
+/examples/isr
+/examples/isr-osc
+/examples/nes
+/examples/okLed
+/examples/rht03
+/examples/servo
+/examples/softPwm
+/examples/softTone
+/examples/speed
+/examples/spiSpeed
+/examples/serialTest
+/examples/serialRead
+/examples/watchdog
+/examples/wfi
+/examples/max31855
+/examples/lcd
+/examples/lcd-adafruit
+/examples/lowPower
+/examples/oled_demo
+/examples/w25q64_test
+
+# Debian build artifacts
+debian/*.substvars
+debian/*.log
+debian/files
+debian/tmp/
+debian/wiringpi/
+debian/.debhelper/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
