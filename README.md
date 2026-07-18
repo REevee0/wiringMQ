@@ -63,7 +63,39 @@ int main(void)
 
 Build with `gcc blink.c -lwiringPi -o blink`.
 
-## Pinout (`gpio readall`)
+## Pinout — 40-pin header
+
+Physical layout as seen looking at the board with the header on the right side:
+
+| GPIO | wPi | Name       |      | Pin |     |      | Name       | wPi | GPIO |
+|-----:|:---:|:-----------|:----:|:---:|:---:|:----:|:-----------|:---:|:-----|
+|      |     | **3.3V**   |      |  1  |  2  |      | **5V**     |     |      |
+|  264 |  0  | PI8 / SDA  |      |  3  |  4  |      | **5V**     |     |      |
+|  263 |  1  | PI7 / SCL  |      |  5  |  6  |      | **GND**    |     |      |
+|  256 |  2  | PI0        |      |  7  |  8  |      | TXD.0      |  3  | 224  |
+|      |     | **GND**    |      |  9  | 10  |      | RXD.0      |  4  | 225  |
+|  226 |  5  | TX.5       |      | 11  | 12  |      | PI1        |  6  | 257  |
+|  227 |  7  | RX.5       |      | 13  | 14  |      | **GND**    |     |      |
+|  269 |  8  | PI13       |      | 15  | 16  |      | PI14       |  9  | 270  |
+|      |     | **3.3V**   |      | 17  | 18  |      | PH4        | 10  | 228  |
+|  231 | 11  | MOSI.1     |      | 19  | 20  |      | **GND**    |     |      |
+|  232 | 12  | MISO.1     |      | 21  | 22  |      | PI6        | 13  | 262  |
+|  230 | 14  | SCLK.1     |      | 23  | 24  |      | CS.0       | 15  | 229  |
+|      |     | **GND**    |      | 25  | 26  |      | CS.1       | 16  | 233  |
+|  266 | 17  | PI10       |      | 27  | 28  |      | PI9        | 18  | 265  |
+|  267 | 19  | PI11       |      | 29  | 30  |      | **GND**    |     |      |
+|  268 | 20  | PI12       |      | 31  | 32  |      | PI5        | 21  | 261  |
+|  271 | 22  | PI15       |      | 33  | 34  |      | **GND**    |     |      |
+|  258 | 23  | PI2        |      | 35  | 36  |      | PH10       | 24  | 234  |
+|  272 | 25  | PI16       |      | 37  | 38  |      | PI4        | 26  | 260  |
+|      |     | **GND**    |      | 39  | 40  |      | PI3        | 27  | 259  |
+
+- **wPi** — WiringPi number (what you pass to `pinMode()`, `digitalWrite()` etc.)
+- **GPIO** — raw Linux GPIO number (what `sysfs` / `gpiochip` would use)
+- **Name** — SoC pin / alternate function
+
+<details>
+<summary>Raw <code>gpio readall</code> output</summary>
 
 ```
  +------+-----+----------+------+---+ MQ_Quad  +---+------+----------+-----+------+
@@ -80,17 +112,19 @@ Build with `gcc blink.c -lwiringPi -o blink`.
  |      |     |     3.3V |      |   | 17 || 18 | 0 | OFF  | PH4      | 10  | 228  |
  |  231 |  11 |   MOSI.1 |  OFF | 0 | 19 || 20 |   |      | GND      |     |      |
  |  232 |  12 |   MISO.1 |  OFF | 0 | 21 || 22 | 0 | OFF  | PI6      | 13  | 262  |
- |  230 |  14 |   SCLK.1 |  OFF | 0 | 23 || 24 | 0 | (null) | CS.0   | 15  | 229  |
- |      |     |      GND |      |   | 25 || 26 | 0 | (null) | CS.1   | 16  | 233  |
+ |  230 |  14 |   SCLK.1 |  OFF | 0 | 23 || 24 | 0 | OFF  | CS.0     | 15  | 229  |
+ |      |     |      GND |      |   | 25 || 26 | 0 | OFF  | CS.1     | 16  | 233  |
  |  266 |  17 |     PI10 | ALT2 | 0 | 27 || 28 | 0 | ALT2 | PI9      | 18  | 265  |
  |  267 |  19 |     PI11 | ALT2 | 0 | 29 || 30 |   |      | GND      |     |      |
  |  268 |  20 |     PI12 | ALT2 | 0 | 31 || 32 | 0 | ALT2 | PI5      | 21  | 261  |
  |  271 |  22 |     PI15 | ALT2 | 0 | 33 || 34 |   |      | GND      |     |      |
  |  258 |  23 |      PI2 | ALT2 | 0 | 35 || 36 | 0 | ALT3 | PH10     | 24  | 234  |
- |  272 |  25 |     PI16 | (null) | 0 | 37 || 38 | 0 | ALT2 | PI4    | 26  | 260  |
+ |  272 |  25 |     PI16 | OFF  | 0 | 37 || 38 | 0 | ALT2 | PI4      | 26  | 260  |
  |      |     |      GND |      |   | 39 || 40 | 0 | ALT2 | PI3      | 27  | 259  |
  +------+-----+----------+------+---+----++----+---+------+----------+-----+------+
 ```
+
+</details>
 
 ## Building
 
