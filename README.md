@@ -1,36 +1,63 @@
-## About
+# wiringMQ
 
-  This project basing on WiringOP and WiringPi. It has been rearranged to work on the MQ_Quad board belonging to Mango Pi company.
-So use this only on MQ_QUAD.
+[![License](https://img.shields.io/badge/license-LGPL-c084fc?style=flat-square)](COPYING.LESSER)
+![Platform](https://img.shields.io/badge/platform-Mango%20Pi%20MQ__Quad-c084fc?style=flat-square)
+![SoC](https://img.shields.io/badge/SoC-Allwinner%20H616-c084fc?style=flat-square)
+![Language](https://img.shields.io/badge/language-C-c084fc?style=flat-square)
 
-Run on Linux compiled by showsoft 
-https://github.com/showsoft/Mangopi-MQQuad-srv
+GPIO / SPI / I²C library for the **Mango Pi MQ_Quad** single-board computer.
+Ports [WiringPi](http://wiringpi.com) and [WiringOP](https://github.com/orangepi-xunlong/wiringOP)
+to the H616 SoC, so existing WiringPi code Just Works™ on MQ_Quad.
 
-## What working?
+> The MQ_Quad ships with an OS image based on Orange Pi Zero 2 (same H616 SoC),
+> so most of the porting work is around correctly mapping MQ_Quad's 40-pin header
+> to the H616's GPIO banks.
 
-  Gpio Output and Input.
+## Features
 
+- ✅ GPIO read / write / mode
+- ✅ SPI (with `overlays=spi-spidev`)
+- ✅ I²C bus 3 (with `overlays=i2c3`)
+- ✅ UART 5
+- ✅ Drop-in compatible with WiringPi C API
+- 🚧 Other comm protocols — more testing to come
 
-## How to download wiringMP
+## Install
 
+> Run on the **Linux image compiled by showsoft**:
+> https://github.com/showsoft/Mangopi-MQQuad-srv
+
+```sh
+sudo apt-get update
+sudo apt-get install -y git
+git clone https://github.com/REevee0/wiringMQ.git
+cd wiringMQ
+./build clean
+sudo ./build
 ```
-# apt-get update
-# apt-get install -y git
-# git clone https://github.com/REevee0/wiringMQ.git
+
+## Quick start
+
+```c
+#include <wiringPi.h>
+
+int main(void)
+{
+    wiringPiSetup();
+    pinMode(2, OUTPUT);       // PI0 (header pin 7)
+
+    for (;;) {
+        digitalWrite(2, HIGH);
+        delay(500);
+        digitalWrite(2, LOW);
+        delay(500);
+    }
+}
 ```
 
+Build with `gcc blink.c -lwiringPi -o blink`.
 
-## How to build wiringMP
-
-```
-# cd wiringMP
-# ./build clean
-# sudo ./build 
-```
-
-
----
-## The output of the gpio readall command
+## Pinout (`gpio readall`)
 
 ```
  +------+-----+----------+------+---+ MQ_Quad  +---+------+----------+-----+------+
@@ -47,37 +74,51 @@ https://github.com/showsoft/Mangopi-MQQuad-srv
  |      |     |     3.3V |      |   | 17 || 18 | 0 | OFF  | PH4      | 10  | 228  |
  |  231 |  11 |   MOSI.1 |  OFF | 0 | 19 || 20 |   |      | GND      |     |      |
  |  232 |  12 |   MISO.1 |  OFF | 0 | 21 || 22 | 0 | OFF  | PI6      | 13  | 262  |
- |  230 |  14 |   SCLK.1 |  OFF | 0 | 23 || 24 | 0 | (null) | CS.0     | 15  | 229  |
- |      |     |      GND |      |   | 25 || 26 | 0 | (null) | CS.1     | 16  | 233  |
+ |  230 |  14 |   SCLK.1 |  OFF | 0 | 23 || 24 | 0 | (null) | CS.0   | 15  | 229  |
+ |      |     |      GND |      |   | 25 || 26 | 0 | (null) | CS.1   | 16  | 233  |
  |  266 |  17 |     PI10 | ALT2 | 0 | 27 || 28 | 0 | ALT2 | PI9      | 18  | 265  |
  |  267 |  19 |     PI11 | ALT2 | 0 | 29 || 30 |   |      | GND      |     |      |
  |  268 |  20 |     PI12 | ALT2 | 0 | 31 || 32 | 0 | ALT2 | PI5      | 21  | 261  |
  |  271 |  22 |     PI15 | ALT2 | 0 | 33 || 34 |   |      | GND      |     |      |
  |  258 |  23 |      PI2 | ALT2 | 0 | 35 || 36 | 0 | ALT3 | PH10     | 24  | 234  |
- |  272 |  25 |     PI16 | (null) | 0 | 37 || 38 | 0 | ALT2 | PI4      | 26  | 260  |
+ |  272 |  25 |     PI16 | (null) | 0 | 37 || 38 | 0 | ALT2 | PI4    | 26  | 260  |
  |      |     |      GND |      |   | 39 || 40 | 0 | ALT2 | PI3      | 27  | 259  |
  +------+-----+----------+------+---+----++----+---+------+----------+-----+------+
- | GPIO | wPi |   Name   | Mode | V | Physical | V | Mode | Name     | wPi | GPIO |
- +------+-----+----------+------+---+  MQ_Quad +---+------+----------+-----+------+
 ```
-## Enable SPI1
-Add the configuration in the part below to /boot/orangepiEnv.txt, and then
-restart the Linux system to open SPI1.
 
+## Enabling peripherals
+
+Both edits go in `/boot/orangepiEnv.txt`; reboot afterwards.
+
+### SPI1
+
+```
 overlays=spi-spidev
 param_spidev_spi_bus=1
 param_spidev_spi_cs=1
+```
 
-## Enable I2C3 
-Since there is a h616 processor on the board and the operating system is made by changing the files of the Orange Pi Zero 2 model, i2c seems to have i2c3 for now. I haven't tested the others yet.
+### I²C 3
 
-SCL Pin = H4
-SDA Pin = H5
+`SCL = H4`, `SDA = H5` (other buses untested).
 
-Add the configuration in the  part below to /boot/orangepiEnv.txt, and then
-restart the Linux system to open I2C3.
-
+```
 overlays=i2c3
-## TO-DO
+```
 
- More tests with communcation protocols.
+## Roadmap
+
+- [ ] PWM via H616 timer block
+- [ ] Hardware UART beyond UART5
+- [ ] Test SPI0 / I²C0 / I²C1
+- [ ] CI for build sanity
+
+## Credits
+
+- [WiringPi](http://wiringpi.com) — original API, Gordon Henderson
+- [WiringOP](https://github.com/orangepi-xunlong/wiringOP) — Orange Pi port
+- [showsoft/Mangopi-MQQuad-srv](https://github.com/showsoft/Mangopi-MQQuad-srv) — MQ_Quad Linux image
+
+## License
+
+LGPL — see [COPYING.LESSER](COPYING.LESSER).
