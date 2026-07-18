@@ -63,7 +63,12 @@ int main(void)
 
 Build with `gcc blink.c -lwiringPi -o blink`.
 
-## The output of the `gpio readall` command
+## Pinout
+
+<img src="assets/pinout.svg" alt="MQ_Quad 40-pin header pinout" width="100%" />
+
+<details>
+<summary>Raw <code>gpio readall</code> output</summary>
 
 ```
  +------+-----+----------+------+---+ MQ_Quad  +---+------+----------+-----+------+
@@ -93,6 +98,8 @@ Build with `gcc blink.c -lwiringPi -o blink`.
  | GPIO | wPi |   Name   | Mode | V | Physical | V | Mode | Name     | wPi | GPIO |
  +------+-----+----------+------+---+  MQ_Quad +---+------+----------+-----+------+
 ```
+
+</details>
 
 ## Building
 
